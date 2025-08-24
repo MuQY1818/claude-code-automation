@@ -1,0 +1,347 @@
+{
+  "commands": [
+    {
+      "name": "create-PR",
+      "category": "git",
+      "description": "Create intelligent pull request with context awareness",
+      "file_path": "commands/create-PR.md",
+      "parameters": [
+        {
+          "name": "base_branch",
+          "type": "string",
+          "required": false,
+          "default": "main",
+          "description": "Base branch for the pull request"
+        },
+        {
+          "name": "draft",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Create as draft PR"
+        }
+      ],
+      "requires_git": true,
+      "requires_tools": ["gh"],
+      "aliases": ["pr", "pull-request"],
+      "examples": [
+        "/create-PR",
+        "/create-PR main",
+        "/create-PR --draft"
+      ]
+    },
+    {
+      "name": "security",
+      "category": "analysis",
+      "description": "Comprehensive security analysis and vulnerability detection",
+      "file_path": "commands/security.md",
+      "parameters": [
+        {
+          "name": "scan_type",
+          "type": "string",
+          "required": false,
+          "default": "full",
+          "choices": ["secrets", "dependencies", "code", "config", "full"],
+          "description": "Type of security scan to perform"
+        }
+      ],
+      "aliases": ["sec", "vuln"],
+      "examples": [
+        "/security",
+        "/security secrets",
+        "/security dependencies"
+      ]
+    },
+    {
+      "name": "refactor",
+      "category": "development",
+      "description": "Intelligent code refactoring with context awareness",
+      "file_path": "commands/refactor.md",
+      "parameters": [
+        {
+          "name": "target",
+          "type": "string",
+          "required": false,
+          "description": "Target file or directory for refactoring"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "default": "quality",
+          "choices": ["pattern", "structure", "performance", "quality"],
+          "description": "Type of refactoring to perform"
+        }
+      ],
+      "aliases": ["ref"],
+      "examples": [
+        "/refactor",
+        "/refactor src/components",
+        "/refactor --type=performance"
+      ]
+    },
+    {
+      "name": "file-review",
+      "category": "analysis",
+      "description": "Comprehensive file and code review with intelligent analysis",
+      "file_path": "commands/file-review.md",
+      "parameters": [
+        {
+          "name": "pattern",
+          "type": "string",
+          "required": false,
+          "description": "File pattern to review"
+        },
+        {
+          "name": "focus",
+          "type": "string",
+          "required": false,
+          "default": "all",
+          "choices": ["security", "performance", "quality", "all"],
+          "description": "Review focus area"
+        }
+      ],
+      "aliases": ["review", "analyze"],
+      "examples": [
+        "/file-review",
+        "/file-review *.py",
+        "/file-review --focus=security"
+      ]
+    },
+    {
+      "name": "push-to-github",
+      "category": "git",
+      "description": "Intelligent git push with validation and context awareness",
+      "file_path": "commands/push-to-github.md",
+      "parameters": [
+        {
+          "name": "branch",
+          "type": "string",
+          "required": false,
+          "description": "Branch to push to"
+        },
+        {
+          "name": "force",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Allow force push"
+        }
+      ],
+      "requires_git": true,
+      "requires_tools": ["git"],
+      "aliases": ["push"],
+      "examples": [
+        "/push-to-github",
+        "/push-to-github feature-branch",
+        "/push-to-github --force"
+      ]
+    },
+    {
+      "name": "header-comments",
+      "category": "documentation",
+      "description": "Add intelligent header comments to source files",
+      "file_path": "commands/header-comments.md",
+      "parameters": [
+        {
+          "name": "pattern",
+          "type": "string",
+          "required": false,
+          "description": "File pattern for adding headers"
+        },
+        {
+          "name": "template",
+          "type": "string",
+          "required": false,
+          "default": "detailed",
+          "choices": ["minimal", "detailed", "custom"],
+          "description": "Header template style"
+        }
+      ],
+      "aliases": ["headers"],
+      "examples": [
+        "/header-comments",
+        "/header-comments *.py",
+        "/header-comments --template=minimal"
+      ]
+    },
+    {
+      "name": "explain-pull-request",
+      "category": "documentation",
+      "description": "Analyze and document code architecture and patterns",
+      "file_path": "commands/explain-pull-request.md",
+      "parameters": [
+        {
+          "name": "component",
+          "type": "string",
+          "required": false,
+          "description": "Specific component to document"
+        },
+        {
+          "name": "detailed",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Include detailed implementation notes"
+        }
+      ],
+      "aliases": ["explain", "doc"],
+      "examples": [
+        "/explain-pull-request",
+        "/explain-pull-request auth-module",
+        "/explain-pull-request --detailed"
+      ]
+    },
+    {
+      "name": "create-readme",
+      "category": "documentation",
+      "description": "Generate intelligent README with bilingual support and project analysis",
+      "file_path": "commands/create-readme.md",
+      "parameters": [
+        {
+          "name": "lang",
+          "type": "string",
+          "required": false,
+          "default": "en",
+          "choices": ["en", "zh", "both"],
+          "description": "Language version (English, Chinese, or both)"
+        },
+        {
+          "name": "style",
+          "type": "string",
+          "required": false,
+          "default": "comprehensive",
+          "choices": ["minimal", "standard", "comprehensive"],
+          "description": "README detail level and structure"
+        }
+      ],
+      "aliases": ["readme", "create-doc"],
+      "examples": [
+        "/create-readme",
+        "/create-readme --lang=zh",
+        "/create-readme --lang=both --style=comprehensive"
+      ]
+    },
+    {
+      "name": "update-readme",
+      "category": "documentation", 
+      "description": "Intelligently update existing README while preserving content",
+      "file_path": "commands/update-readme.md",
+      "parameters": [
+        {
+          "name": "lang",
+          "type": "string",
+          "required": false,
+          "default": "en",
+          "choices": ["en", "zh", "both"],
+          "description": "Language version to update"
+        },
+        {
+          "name": "sections",
+          "type": "string",
+          "required": false,
+          "description": "Specific sections to update (comma-separated)"
+        },
+        {
+          "name": "preserve",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Preserve existing custom content"
+        }
+      ],
+      "aliases": ["update-doc"],
+      "examples": [
+        "/update-readme",
+        "/update-readme --lang=zh", 
+        "/update-readme --sections=installation,usage"
+      ]
+    },
+    {
+      "name": "git-commit",
+      "category": "git",
+      "description": "Generate intelligent commit messages using ultra think analysis",
+      "file_path": "commands/git-commit.md",
+      "parameters": [
+        {
+          "name": "style",
+          "type": "string",
+          "required": false,
+          "default": "conventional",
+          "choices": ["conventional", "semantic", "angular", "custom"],
+          "description": "Commit message style format"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "choices": ["feat", "fix", "docs", "style", "refactor", "test", "chore", "ci", "build"],
+          "description": "Override automatic type detection"
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": false,
+          "description": "Specify commit scope manually"
+        },
+        {
+          "name": "dry_run",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Preview commit message without committing"
+        },
+        {
+          "name": "auto",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Auto-commit without confirmation"
+        }
+      ],
+      "requires_git": true,
+      "requires_tools": ["git"],
+      "aliases": ["commit", "c"],
+      "examples": [
+        "/git-commit",
+        "/git-commit --dry-run",
+        "/git-commit --type=feat --scope=auth",
+        "/git-commit --style=angular --auto"
+      ]
+    }
+  ],
+  "command_execution": {
+    "timeout": 300,
+    "retry_attempts": 1,
+    "validation_enabled": true,
+    "context_injection": true,
+    "error_handling": "detailed"
+  },
+  "categories": {
+    "git": {
+      "description": "Git and version control operations",
+      "color": "#F1502F",
+      "icon": "git-branch"
+    },
+    "analysis": {
+      "description": "Code analysis and review tools",
+      "color": "#0366D6",
+      "icon": "search"
+    },
+    "development": {
+      "description": "Development and refactoring tools",
+      "color": "#28A745",
+      "icon": "code"
+    },
+    "documentation": {
+      "description": "Documentation and explanation tools",
+      "color": "#6F42C1",
+      "icon": "book"
+    },
+    "utility": {
+      "description": "General utility commands",
+      "color": "#6A737D",
+      "icon": "tools"
+    }
+  }
+}

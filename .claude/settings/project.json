@@ -1,0 +1,48 @@
+{
+  "project_specific": {
+    "name": "Current Project",
+    "inherit_global": true,
+    "overrides": {
+      "context_detection": {
+        "custom_indicators": {},
+        "ignore_patterns": [
+          "node_modules/",
+          ".git/",
+          "__pycache__/",
+          "*.pyc",
+          ".vscode/",
+          ".idea/"
+        ]
+      }
+    }
+  },
+  "hook_overrides": {
+    "UserPromptSubmit": {
+      "answer_in_short": {
+        "enabled": true,
+        "conditions": {
+          "project_specific": true
+        }
+      }
+    }
+  },
+  "command_overrides": {},
+  "custom_settings": {
+    "development_mode": false,
+    "debug_logging": false,
+    "auto_git_hooks": true,
+    "smart_completions": true
+  },
+  "environment_specific": {
+    "development": {
+      "logging_level": "debug",
+      "validation_strict": false,
+      "performance_monitoring": true
+    },
+    "production": {
+      "logging_level": "warn",
+      "validation_strict": true,
+      "performance_monitoring": false
+    }
+  }
+}

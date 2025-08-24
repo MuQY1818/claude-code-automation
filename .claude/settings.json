@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/append_ultrathink.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/answer_in_short.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/append_explain.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/append_default.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "version": "2.0.0",
+  "schema_version": "1.0",
+  "project": {
+    "name": "Claude Code Automation System",
+    "type": "automation",
+    "description": "Enhanced Claude Code automation with intelligent hooks and commands"
+  },
+  "global_settings": {
+    "default_model": "claude-sonnet-4-20250514",
+    "context_awareness": true,
+    "smart_validation": true,
+    "auto_detection": true,
+    "logging": {
+      "enabled": true,
+      "level": "info",
+      "file": "logs/claude_automation.log"
+    }
+  },
+  "hook_settings": {
+    "enabled": true,
+    "auto_discovery": true,
+    "priority_based_execution": true,
+    "context_sharing": true,
+    "error_handling": "graceful",
+    "max_execution_time": 30,
+    "concurrent_execution": false
+  },
+  "command_settings": {
+    "enabled": true,
+    "auto_discovery": true,
+    "validation_enabled": true,
+    "context_injection": true,
+    "help_generation": true,
+    "alias_support": true
+  },
+  "context_detection": {
+    "project_type_detection": true,
+    "language_detection": true,
+    "framework_detection": true,
+    "git_state_tracking": true,
+    "dependency_analysis": true,
+    "cache_duration": 300
+  },
+  "security": {
+    "sensitive_data_detection": true,
+    "command_validation": true,
+    "safe_execution_mode": true,
+    "allowed_tool_patterns": [
+      "Read", "Write", "Edit", "MultiEdit", "Bash(git:*)", 
+      "Bash(gh:*)", "Bash(npm:*)", "Bash(python:*)", 
+      "Grep", "Glob", "LS"
+    ]
+  },
+  "integrations": {
+    "git": {
+      "enabled": true,
+      "auto_branch_detection": true,
+      "commit_analysis": true,
+      "branch_protection": true
+    },
+    "github": {
+      "enabled": true,
+      "cli_integration": true,
+      "auto_pr_creation": true,
+      "issue_linking": true
+    },
+    "package_managers": {
+      "npm": true,
+      "pip": true,
+      "cargo": true,
+      "go_mod": true
+    }
+  },
+  "performance": {
+    "parallel_execution": true,
+    "caching_enabled": true,
+    "lazy_loading": true,
+    "batch_processing": true
+  },
+  "user_preferences": {
+    "verbose_output": false,
+    "auto_confirmation": false,
+    "smart_suggestions": true,
+    "learning_mode": false
+  }
+}

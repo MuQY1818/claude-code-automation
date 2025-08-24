@@ -1,0 +1,33 @@
+{
+  "hooks": {
+    "PreCommand": [],
+    "PostCommand": [],
+    "OnFileChange": [],
+    "OnGitAction": []
+  },
+  "hook_execution": {
+    "timeout": 30,
+    "retry_attempts": 2,
+    "error_strategy": "continue",
+    "logging": true,
+    "context_preservation": true
+  },
+  "conditional_logic": {
+    "project_type_mapping": {
+      "web": ["javascript", "typescript", "react", "vue", "angular"],
+      "python": ["python", "django", "flask", "fastapi"],
+      "java": ["java", "spring", "maven", "gradle"],
+      "rust": ["rust", "cargo"],
+      "go": ["go", "golang"]
+    },
+    "complexity_indicators": [
+      "implement", "create", "build", "develop", "design",
+      "refactor", "optimize", "debug", "fix", "architecture",
+      "algorithm", "integration", "security"
+    ],
+    "learning_indicators": [
+      "learn", "understand", "explain", "how does", "what is",
+      "new to", "beginner", "first time"
+    ]
+  }
+}
