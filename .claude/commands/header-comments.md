@@ -5,6 +5,42 @@ description: Add intelligent header comments to source files
 model: claude-sonnet-4-20250514
 ---
 
+⚠️  **CRITICAL SAFETY WARNING** ⚠️  
+**This command modifies source files and MUST be run on a new branch, never on main/master**
+
+## Critical Safety Requirements
+
+### **Pre-Execution Branch Check**
+```bash
+# Get current branch
+current_branch=$(git branch --show-current 2>/dev/null || echo "unknown")
+
+# Check if on main/master branch
+if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
+    echo "🚨 ERROR: Cannot run header-comments on main/master branch!"
+    echo "This command modifies source files and could affect your codebase."
+    echo "Please create and switch to a new branch first:"
+    echo "  git checkout -b feature/add-header-comments-$(date +%Y%m%d-%H%M%S)"
+    echo "  Then run the command again."
+    exit 1
+fi
+
+# Verify working directory is clean
+if ! git diff-index --quiet HEAD --; then
+    echo "⚠️  WARNING: You have uncommitted changes."
+    echo "Adding headers will modify source files. Recommend committing changes first."
+    git status --porcelain
+    read -p "Continue anyway? (y/N): " -n 1 -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Operation cancelled. Commit your changes first:"
+        echo "  git add -A && git commit -m 'Save work before adding headers'"
+        exit 1
+    fi
+fi
+```
+
+## Header Comment Process
+
 Add comprehensive header comments to source files with context-aware templates:
 
 ## Header Comment Scope:

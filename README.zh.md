@@ -19,13 +19,14 @@
 - **摘要模式** - 项目感知的 `-d` 标志处理
 
 ### **自定义命令系统**
-- **10 个专业命令** - 高级开发工作流程自动化
+- **11 个专业命令** - 高级开发工作流程自动化
 - **安全分析** (`/security`) - 多层漏洞扫描
 - **PR 创建** (`/create-PR`) - 智能拉取请求生成
-- **代码重构** (`/refactor`) - 上下文感知的代码改进
+- **代码重构** (`/refactor`) - 具备分支安全保护的上下文感知代码改进
 - **文件审查** (`/file-review`) - 综合代码分析
 - **Git 提交** (`/git-commit`) - 超级思考驱动的提交信息生成
-- **双语文档** (`/create-readme`, `/update-readme`) - 英文/中文 README 自动化
+- **项目清理** (`/clean-project`) - 具备 git 保护的安全项目清理
+- **双语文档** (`/create-readme`, `/update-readme`) - 带备份功能的英文/中文 README 自动化
 
 ### **上下文智能**
 - **项目检测** - 自动识别项目类型（Web、Python、Java、Rust、Go、Docker）
@@ -36,9 +37,11 @@
 ## 安装
 
 ### 先决条件
-- **Python 3.8+**
+- **Python 3.8+** （用于自动化框架）
 - **Claude Code CLI** 已安装并配置
 - **Git** 用于版本控制功能
+- **GitHub CLI** (`gh`) 用于 PR 创建（可选）
+- **Node.js/npm** 或相关包管理器（取决于项目）
 
 ### 设置
 ```bash
@@ -46,13 +49,11 @@
 git clone https://github.com/muqy1818/claude-code-automation.git
 cd claude-code-automation
 
-# 安装 Python 依赖（如果有）
-pip install -r requirements.txt
+# .claude/ 配置已为此项目准备就绪
+# 在此目录使用 Claude Code 时，钩子系统将自动激活
 
-# 配置 Claude Code 钩子
-cp .claude/settings.json ~/.claude/settings.json
-# 或者使用项目特定配置
-# .claude/settings.json 已经就位
+# 全局安装（可选）：
+# cp .claude/settings.json ~/.claude/settings.json
 ```
 
 ## 快速开始
@@ -75,13 +76,16 @@ echo "设计可扩展的微服务架构" | claude
 # 生成安全分析
 /security
 
+# 安全清理项目（新功能）
+/clean-project --dry-run
+
 # 创建智能 README（双语）
 /create-readme --lang=both --style=standard
 
 # 智能 PR 创建
 /create-PR --draft
 
-# 上下文感知重构
+# 上下文感知重构（安全：需要新分支）
 /refactor --type=performance
 ```
 
@@ -129,7 +133,13 @@ echo "设计可扩展的微服务架构" | claude
 /security dependencies         # 检查易受攻击的依赖
 /security full                # 完整安全审计
 
-# 代码改进
+# 项目清理（新功能）
+/clean-project --dry-run       # 预览清理（安全）
+/clean-project --mode=moderate # 更彻底的清理
+/clean --mode=safe            # 基本清理的别名
+
+# 代码改进（安全：使用功能分支）
+git checkout -b refactor/improvements
 /refactor src/                # 重构特定目录
 /refactor --type=pattern      # 提取模式并减少重复
 /file-review --focus=security # 以安全为重点的代码审查
@@ -137,6 +147,12 @@ echo "设计可扩展的微服务架构" | claude
 
 #### **Git 集成**
 ```bash
+# 智能提交生成
+/git-commit --dry-run         # 预览生成的提交信息
+/git-commit --type=feat       # 覆盖自动检测
+/commit --style=conventional  # 使用传统提交的别名
+
+# 拉取请求管理
 /create-PR main               # 针对主分支创建 PR
 /create-PR --draft            # 创建草稿 PR
 /push-to-github              # 经过验证的 git 推送
@@ -145,13 +161,19 @@ echo "设计可扩展的微服务架构" | claude
 
 ## 架构
 
-系统使用 **双层架构**：
+系统使用具备全面安全措施的 **双层架构**：
 
 ### **核心组件**
 - **上下文管理器** (`core/context_manager.py`) - 项目智能和检测
 - **命令注册表** (`core/command_registry.py`) - 命令执行和验证
 - **钩子调度器** (`core/hook_dispatcher.py`) - 命令级钩子管理
 - **原生钩子** (`hooks/UserPromptSubmit/`) - 提示修改脚本
+
+### **安全特性**
+- **分支保护** - 修改文件的命令需要功能分支
+- **备份创建** - 破坏性操作前自动备份
+- **预览模式** - 执行前预览更改
+- **Git 安全** - 永不触及主/master分支的危险操作
 
 ### **配置系统**
 - **原生钩子**：`.claude/settings.json` (Claude Code 格式)
@@ -193,13 +215,31 @@ cd claude-code-automation
 # 测试钩子系统
 echo "测试提示 -d" | python .claude/hooks/UserPromptSubmit/append_default.py
 
-# 测试命令注册表
-python .claude/core/command_registry.py list documentation
+# 测试命令系统（可能需要Python路径设置）
+# 命令通过 Claude Code 接口工作，不是直接执行
+
+# 测试安全特性
+/clean-project --dry-run      # 应显示预览而不更改
 ```
 
 ## 许可证
 
 本项目在 MIT 许可证下授权 - 详情请参阅 [LICENSE](LICENSE) 文件。
+
+## 安全指南
+
+### **分支安全**
+修改文件的命令（`/refactor`、`/header-comments`）需要功能分支：
+```bash
+git checkout -b feature/your-changes
+/refactor  # 现在运行安全
+```
+
+### **备份保护**
+文档命令（`/create-readme`、`/update-readme`）自动创建备份：
+```bash
+/update-readme  # 创建 backups/README.md.backup.TIMESTAMP
+```
 
 ## 致谢
 
@@ -209,4 +249,4 @@ python .claude/core/command_registry.py list documentation
 
 ---
 
-**用心为智能开发自动化制作**
+**用心为安全第一的智能开发自动化制作**

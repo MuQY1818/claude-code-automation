@@ -5,6 +5,40 @@ description: Generate intelligent README with bilingual support and deep project
 model: claude-sonnet-4-20250514
 ---
 
+⚠️  **SAFETY WARNING** ⚠️  
+**This command creates/overwrites README files. Recommended to run on a new branch for safety**
+
+## Safety Recommendations
+
+### **Pre-Execution Branch Check**
+```bash
+# Get current branch
+current_branch=$(git branch --show-current 2>/dev/null || echo "unknown")
+
+# Warn if on main/master branch
+if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
+    echo "⚠️  WARNING: Creating README on main/master branch!"
+    echo "This will overwrite existing README.md if it exists."
+    echo "Recommended to create a documentation branch:"
+    echo "  git checkout -b docs/readme-updates-$(date +%Y%m%d-%H%M%S)"
+    read -p "Continue on main branch anyway? (y/N): " -n 1 -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Operation cancelled."
+        exit 1
+    fi
+fi
+
+# Check if README.md already exists
+if [ -f "README.md" ]; then
+    echo "📝 Existing README.md found. Creating backup..."
+    mkdir -p backups
+    cp README.md backups/README.md.backup.$(date +%Y%m%d-%H%M%S)
+    echo "✅ Backup created: backups/README.md.backup.$(date +%Y%m%d-%H%M%S)"
+fi
+```
+
+## README Generation Process
+
 Generate a comprehensive, intelligent README file based on deep project analysis and context awareness.
 
 ## Language Strategy

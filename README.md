@@ -19,13 +19,14 @@ This repository provides a sophisticated dual-layer automation system that exten
 - **Digest Mode** - Project-aware `-d` flag processing
 
 ### **Custom Command System**
-- **10 Specialized Commands** - Advanced development workflow automation
+- **11 Specialized Commands** - Advanced development workflow automation
 - **Security Analysis** (`/security`) - Multi-layer vulnerability scanning
 - **PR Creation** (`/create-PR`) - Intelligent pull request generation
-- **Code Refactoring** (`/refactor`) - Context-aware code improvement
+- **Code Refactoring** (`/refactor`) - Context-aware code improvement with branch safety
 - **File Review** (`/file-review`) - Comprehensive code analysis
 - **Git Commits** (`/git-commit`) - Ultra think-powered commit message generation
-- **Bilingual Documentation** (`/create-readme`, `/update-readme`) - English/Chinese README automation
+- **Project Cleanup** (`/clean-project`) - Safe project cleanup with git protection
+- **Bilingual Documentation** (`/create-readme`, `/update-readme`) - English/Chinese README automation with backups
 
 ### **Context Intelligence**
 - **Project Detection** - Automatic identification of project types (Web, Python, Java, Rust, Go, Docker)
@@ -36,9 +37,11 @@ This repository provides a sophisticated dual-layer automation system that exten
 ## Installation
 
 ### Prerequisites
-- **Python 3.8+**
+- **Python 3.8+** (for automation framework)
 - **Claude Code CLI** installed and configured
 - **Git** for version control features
+- **GitHub CLI** (`gh`) for PR creation (optional)
+- **Node.js/npm** or relevant package managers (project-dependent)
 
 ### Setup
 ```bash
@@ -46,13 +49,11 @@ This repository provides a sophisticated dual-layer automation system that exten
 git clone https://github.com/muqy1818/claude-code-automation.git
 cd claude-code-automation
 
-# Install Python dependencies (if any)
-pip install -r requirements.txt
+# The .claude/ configuration is already in place for this project
+# Hook system will automatically activate when using Claude Code here
 
-# Configure Claude Code hooks
-cp .claude/settings.json ~/.claude/settings.json
-# OR for project-specific configuration
-# The .claude/settings.json is already in place
+# For global installation (optional):
+# cp .claude/settings.json ~/.claude/settings.json
 ```
 
 ## Quick Start
@@ -75,13 +76,16 @@ Access advanced automation with slash commands:
 # Generate security analysis
 /security
 
+# Clean project safely (NEW)
+/clean-project --dry-run
+
 # Create intelligent README (bilingual)
 /create-readme --lang=both --style=standard
 
 # Intelligent PR creation
 /create-PR --draft
 
-# Context-aware refactoring
+# Context-aware refactoring (SAFETY: requires new branch)
 /refactor --type=performance
 ```
 
@@ -129,7 +133,13 @@ The automation system operates through **two layers**:
 /security dependencies         # Check vulnerable dependencies
 /security full                # Complete security audit
 
-# Code improvement
+# Project cleanup (NEW)
+/clean-project --dry-run       # Preview cleanup (safe)
+/clean-project --mode=moderate # More thorough cleanup
+/clean --mode=safe            # Alias for basic cleanup
+
+# Code improvement (SAFETY: Use feature branches)
+git checkout -b refactor/improvements
 /refactor src/                # Refactor specific directory
 /refactor --type=pattern      # Extract patterns and reduce duplication
 /file-review --focus=security # Security-focused code review
@@ -137,6 +147,12 @@ The automation system operates through **two layers**:
 
 #### **Git Integration**
 ```bash
+# Smart commit generation
+/git-commit --dry-run         # Preview generated commit message
+/git-commit --type=feat       # Override auto-detection
+/commit --style=conventional  # Alias with conventional commits
+
+# Pull request management
 /create-PR main               # Create PR against main branch
 /create-PR --draft            # Create draft PR
 /push-to-github              # Validated git push
@@ -145,13 +161,19 @@ The automation system operates through **two layers**:
 
 ## Architecture
 
-The system uses a **dual-layer architecture**:
+The system uses a **dual-layer architecture** with comprehensive safety measures:
 
 ### **Core Components**
 - **Context Manager** (`core/context_manager.py`) - Project intelligence and detection
 - **Command Registry** (`core/command_registry.py`) - Command execution and validation  
 - **Hook Dispatcher** (`core/hook_dispatcher.py`) - Command-level hook management
 - **Native Hooks** (`hooks/UserPromptSubmit/`) - Prompt modification scripts
+
+### **Safety Features**
+- **Branch Protection** - Commands that modify files require feature branches
+- **Backup Creation** - Automatic backups before destructive operations
+- **Dry-run Modes** - Preview changes before execution
+- **Git Safety** - Never touches main/master branches for risky operations
 
 ### **Configuration System**
 - **Native Hooks**: `.claude/settings.json` (Claude Code format)
@@ -187,19 +209,37 @@ The system provides comprehensive bilingual documentation generation:
 ### **Development Setup**
 ```bash
 # Clone and setup
-git clone https://github.com/your-org/claude-code-automation.git
+git clone https://github.com/muqy1818/claude-code-automation.git
 cd claude-code-automation
 
 # Test hook system
 echo "test prompt -d" | python .claude/hooks/UserPromptSubmit/append_default.py
 
-# Test command registry
-python .claude/core/command_registry.py list documentation
+# Test command system (may require Python path setup)
+# Commands work through Claude Code interface, not direct execution
+
+# Test safety features
+/clean-project --dry-run      # Should show preview without changes
 ```
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Safety Guidelines
+
+### **Branch Safety**
+Commands that modify files (`/refactor`, `/header-comments`) require feature branches:
+```bash
+git checkout -b feature/your-changes
+/refactor  # Now safe to run
+```
+
+### **Backup Protection**
+Documentation commands (`/create-readme`, `/update-readme`) automatically create backups:
+```bash
+/update-readme  # Creates backups/README.md.backup.TIMESTAMP
+```
 
 ## Acknowledgments
 
@@ -209,4 +249,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Made with care for intelligent development automation**
+**Made with care for intelligent development automation with safety first**

@@ -5,6 +5,55 @@ description: Intelligent code refactoring with context awareness
 model: claude-sonnet-4-20250514
 ---
 
+⚠️  **CRITICAL SAFETY WARNING** ⚠️  
+**This command modifies source code and MUST be run on a new branch, never on main/master**
+
+## Critical Safety Requirements
+
+### **Pre-Execution Branch Check**
+```bash
+# Get current branch
+current_branch=$(git branch --show-current 2>/dev/null || echo "unknown")
+
+# Check if on main/master branch
+if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
+    echo "🚨 ERROR: Cannot run refactor on main/master branch!"
+    echo "This command modifies source code and could break your project."
+    echo "Please create and switch to a new branch first:"
+    echo "  git checkout -b refactor/code-improvements-$(date +%Y%m%d-%H%M%S)"
+    echo "  Then run the command again."
+    exit 1
+fi
+
+# Warn if not on a feature/refactor branch
+if [[ ! "$current_branch" =~ ^(refactor|feature|fix)/ ]]; then
+    echo "⚠️  WARNING: Recommended to use a dedicated refactor branch"
+    echo "Current branch: $current_branch" 
+    echo "This command will modify source code files."
+    read -p "Continue anyway? (y/N): " -n 1 -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Operation cancelled. Create a refactor branch:"
+        echo "  git checkout -b refactor/code-improvements-$(date +%Y%m%d-%H%M%S)"
+        exit 1
+    fi
+fi
+
+# Verify working directory is clean
+if ! git diff-index --quiet HEAD --; then
+    echo "⚠️  WARNING: You have uncommitted changes."
+    echo "Refactoring will modify files. Recommend committing current changes first."
+    git status --porcelain
+    read -p "Continue anyway? (y/N): " -n 1 -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Operation cancelled. Commit your changes first:"
+        echo "  git add -A && git commit -m 'Save work before refactoring'"
+        exit 1
+    fi
+fi
+```
+
+## Refactoring Process
+
 Perform intelligent refactoring based on project context and specified target:
 
 ## Refactoring Analysis:

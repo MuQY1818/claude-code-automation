@@ -5,6 +5,40 @@ description: Intelligently update existing README while preserving custom conten
 model: claude-sonnet-4-20250514
 ---
 
+⚠️  **SAFETY WARNING** ⚠️  
+**This command modifies README files. Recommended to run on a new branch for safety**
+
+## Safety Recommendations
+
+### **Pre-Execution Branch Check**
+```bash
+# Get current branch
+current_branch=$(git branch --show-current 2>/dev/null || echo "unknown")
+
+# Warn if on main/master branch  
+if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
+    echo "⚠️  WARNING: Updating README on main/master branch!"
+    echo "This will modify existing README.md files."
+    echo "Recommended to create a documentation branch:"
+    echo "  git checkout -b docs/readme-updates-$(date +%Y%m%d-%H%M%S)"
+    read -p "Continue on main branch anyway? (y/N): " -n 1 -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Operation cancelled."
+        exit 1
+    fi
+fi
+
+# Create backup before modifications
+if [ -f "README.md" ]; then
+    echo "📝 Creating backup of existing README..."
+    mkdir -p backups
+    cp README.md backups/README.md.backup.$(date +%Y%m%d-%H%M%S)
+    echo "✅ Backup created: backups/README.md.backup.$(date +%Y%m%d-%H%M%S)"
+fi
+```
+
+## README Update Process
+
 Intelligently enhance and modernize existing README files while preserving valuable custom content and maintaining consistency.
 
 ## Update Strategy

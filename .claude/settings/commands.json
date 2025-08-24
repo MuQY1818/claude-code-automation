@@ -308,6 +308,59 @@
         "/git-commit --type=feat --scope=auth",
         "/git-commit --style=angular --auto"
       ]
+    },
+    {
+      "name": "clean-project",
+      "category": "utility",
+      "description": "Safely clean project files while preserving code and git integrity",
+      "file_path": "commands/clean-project.md",
+      "parameters": [
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "default": "safe",
+          "choices": ["safe", "moderate"],
+          "description": "Cleanup intensity level"
+        },
+        {
+          "name": "dry_run",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Preview changes without executing"
+        },
+        {
+          "name": "preserve_git",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Extra git safety protection"
+        },
+        {
+          "name": "skip_cache",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Skip package manager cache cleanup"
+        },
+        {
+          "name": "skip_build",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Skip build artifact cleanup"
+        }
+      ],
+      "requires_git": false,
+      "requires_tools": ["find"],
+      "aliases": ["clean", "cleanup"],
+      "examples": [
+        "/clean-project",
+        "/clean-project --dry-run",
+        "/clean-project --mode=moderate",
+        "/clean-project --dry-run --mode=moderate"
+      ]
     }
   ],
   "command_execution": {
