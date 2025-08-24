@@ -78,6 +78,7 @@ class ScriptCommandExecutor(CommandExecutor):
             return {"success": False, "error": f"Script not found: {self.script_path}"}
         
         try:
+            import os
             # Prepare environment with parameters and context
             env = dict(os.environ)
             for key, value in params.items():

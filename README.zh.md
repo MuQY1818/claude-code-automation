@@ -1,4 +1,8 @@
+<div align="center">
+  <img src="assets/logo.png" alt="Claude Code 自动化系统" width="200"/>
+  
 # Claude Code 自动化系统
+</div>
 
 [![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)](https://www.python.org/downloads/)
 [![版本](https://img.shields.io/badge/版本-v2.0.0-green.svg)](https://github.com/anthropics/claude-code)

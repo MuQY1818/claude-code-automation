@@ -1,4 +1,8 @@
+<div align="center">
+  <img src="assets/logo.png" alt="Claude Code Automation System" width="200"/>
+  
 # Claude Code Automation System
+</div>
 
 [![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Version](https://img.shields.io/badge/version-v2.0.0-green.svg)](https://github.com/anthropics/claude-code)
