@@ -40,25 +40,58 @@
 
 ## 安装
 
-### 先决条件
-- **Python 3.8+** （用于自动化框架）
-- **Claude Code CLI** 已安装并配置
-- **Git** 用于版本控制功能
-- **GitHub CLI** (`gh`) 用于 PR 创建（可选）
-- **Node.js/npm** 或相关包管理器（取决于项目）
+### 🚀 快速设置（推荐）
+**只需将 `.claude/` 目录复制到您现有的项目中即可！**
 
-### 设置
+整个自动化系统都包含在 `.claude/` 文件夹中，无需重构项目结构。
+
 ```bash
-# 克隆仓库
+# 方法1：直接下载并解压
+curl -L https://github.com/muqy1818/claude-code-automation/archive/master.zip -o automation.zip
+unzip automation.zip
+cp -r claude-code-automation-master/.claude/ /path/to/your/project/
+cd /path/to/your/project/
+
+# 就是这样！所有11个命令和钩子系统现在可用
+# 测试是否工作：
+echo "测试自动化 -d" | claude
+```
+
+### ⚡ 其他安装方法
+
+#### 手动下载
+1. 访问 [GitHub 仓库](https://github.com/muqy1818/claude-code-automation)
+2. 下载 `.claude/` 文件夹内容
+3. 复制到您的项目根目录
+4. 在该目录开始使用 Claude Code
+
+#### Git 子树（适用于 Git 用户）
+```bash
+cd your-existing-project/
+git subtree add --prefix=.claude https://github.com/muqy1818/claude-code-automation.git master --squash
+```
+
+#### 完整仓库克隆（用于开发）
+```bash
+# 仅在贡献代码或学习代码库时需要
 git clone https://github.com/muqy1818/claude-code-automation.git
 cd claude-code-automation
-
-# .claude/ 配置已为此项目准备就绪
-# 在此目录使用 Claude Code 时，钩子系统将自动激活
-
-# 全局安装（可选）：
-# cp .claude/settings.json ~/.claude/settings.json
+# 准备就绪用于开发和测试
 ```
+
+### ✅ 您将获得什么
+一旦 `.claude/` 在您的项目中：
+- **11个专业命令**（`/security`、`/create-PR`、`/refactor` 等）
+- **智能钩子系统**（超级思考、简洁回应、摘要模式）
+- **上下文感知自动化**（检测您的项目类型和语言）
+- **安全第一设计**（分支保护、备份、预览模式）
+- **双语文档**支持
+
+### 先决条件
+- **Claude Code CLI** 已安装并配置
+- **Python 3.8+**（用于自动化框架）
+- **Git**（用于git相关命令和安全功能）
+- **可选**：GitHub CLI (`gh`) 用于PR创建，Node.js/npm 用于Web项目
 
 ## 快速开始
 
@@ -212,18 +245,20 @@ git checkout -b refactor/improvements
 
 ### **开发环境设置**
 ```bash
-# 克隆并设置
+# 用于为自动化框架本身做贡献
 git clone https://github.com/muqy1818/claude-code-automation.git
 cd claude-code-automation
 
-# 测试钩子系统
+# 直接测试钩子系统
 echo "测试提示 -d" | python .claude/hooks/UserPromptSubmit/append_default.py
 
-# 测试命令系统（可能需要Python路径设置）
-# 命令通过 Claude Code 接口工作，不是直接执行
-
-# 测试安全特性
+# 测试命令系统（通过 Claude Code 接口工作）
 /clean-project --dry-run      # 应显示预览而不更改
+
+# 在您自己的项目中测试
+cp -r .claude/ /path/to/test/project/
+cd /path/to/test/project/
+echo "测试集成 -d" | claude
 ```
 
 ## 许可证

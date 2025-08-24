@@ -40,25 +40,58 @@ This repository provides a sophisticated dual-layer automation system that exten
 
 ## Installation
 
-### Prerequisites
-- **Python 3.8+** (for automation framework)
-- **Claude Code CLI** installed and configured
-- **Git** for version control features
-- **GitHub CLI** (`gh`) for PR creation (optional)
-- **Node.js/npm** or relevant package managers (project-dependent)
+### 🚀 Quick Setup (Recommended)
+**Just copy the `.claude/` directory to your existing project - that's it!**
 
-### Setup
+The entire automation system is self-contained in the `.claude/` folder. No project restructuring needed.
+
 ```bash
-# Clone the repository
+# Method 1: Direct download and extract
+curl -L https://github.com/muqy1818/claude-code-automation/archive/master.zip -o automation.zip
+unzip automation.zip
+cp -r claude-code-automation-master/.claude/ /path/to/your/project/
+cd /path/to/your/project/
+
+# That's it! All 11 commands and hook system now available
+# Test it works:
+echo "test automation -d" | claude
+```
+
+### ⚡ Alternative Installation Methods
+
+#### Manual Download
+1. Visit the [GitHub repository](https://github.com/muqy1818/claude-code-automation)
+2. Download the `.claude/` folder contents
+3. Copy to your project root
+4. Start using Claude Code in that directory
+
+#### Git Subtree (for Git users)
+```bash
+cd your-existing-project/
+git subtree add --prefix=.claude https://github.com/muqy1818/claude-code-automation.git master --squash
+```
+
+#### Full Repository Clone (for development)
+```bash
+# Only needed for contributing or studying the codebase
 git clone https://github.com/muqy1818/claude-code-automation.git
 cd claude-code-automation
-
-# The .claude/ configuration is already in place for this project
-# Hook system will automatically activate when using Claude Code here
-
-# For global installation (optional):
-# cp .claude/settings.json ~/.claude/settings.json
+# Ready for development and testing
 ```
+
+### ✅ What You Get
+Once `.claude/` is in your project:
+- **11 specialized commands** (`/security`, `/create-PR`, `/refactor`, etc.)
+- **Intelligent hook system** (ultra think, concise responses, digest mode)
+- **Context-aware automation** (detects your project type and languages)
+- **Safety-first design** (branch protection, backups, dry-run modes)
+- **Bilingual documentation** support
+
+### Prerequisites
+- **Claude Code CLI** installed and configured
+- **Python 3.8+** (for automation framework)
+- **Git** (for git-related commands and safety features)
+- **Optional**: GitHub CLI (`gh`) for PR creation, Node.js/npm for web projects
 
 ## Quick Start
 
@@ -212,18 +245,20 @@ The system provides comprehensive bilingual documentation generation:
 
 ### **Development Setup**
 ```bash
-# Clone and setup
+# For contributing to the automation framework itself
 git clone https://github.com/muqy1818/claude-code-automation.git
 cd claude-code-automation
 
-# Test hook system
+# Test hook system directly
 echo "test prompt -d" | python .claude/hooks/UserPromptSubmit/append_default.py
 
-# Test command system (may require Python path setup)
-# Commands work through Claude Code interface, not direct execution
-
-# Test safety features
+# Test command system (works through Claude Code interface)
 /clean-project --dry-run      # Should show preview without changes
+
+# Test in your own projects
+cp -r .claude/ /path/to/test/project/
+cd /path/to/test/project/
+echo "test integration -d" | claude
 ```
 
 ## License
