@@ -5,6 +5,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/flag_dispatcher.py\""
+          },
+          {
+            "type": "command",
             "command": "python \".claude/hooks/UserPromptSubmit/append_ultrathink.py\""
           },
           {

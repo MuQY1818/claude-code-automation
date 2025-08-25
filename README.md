@@ -17,6 +17,7 @@ This repository provides a sophisticated dual-layer automation system that exten
 
 ### **Native Hook System**
 - **UserPromptSubmit Hooks** - Intelligent prompt modification based on context
+- **Flag Dispatcher** - Shortcut command flags (`-ut`, `-debug`, `-quick`, etc.) for instant control
 - **Ultra Think Mode** - Deep analysis prompts for complex problems
 - **Concise Responses** - Automatic short answers for simple queries
 - **Learning Support** - Enhanced explanations for educational contexts
@@ -134,7 +135,7 @@ The automation system operates through **two layers**:
 #### **Layer 1: Native Claude Code Hooks**
 - Modifies prompts before they reach Claude
 - Configured in `.claude/settings.json`
-- Executes in sequence: ultrathink → answer_in_short → explain → default
+- Executes in sequence: flag_dispatcher → ultrathink → answer_in_short → explain → default
 
 ```bash
 # Examples of hook activation
@@ -142,12 +143,59 @@ The automation system operates through **two layers**:
 "what is Python?"                      # → Triggers concise response
 "help me learn recursion"              # → Triggers explanation mode
 "optimize this code -d"                # → Triggers digest mode
+
+# New shortcut flag examples
+"design microservices -ut"             # → Force ultra think mode
+"analyze this error -debug"            # → Activate debug analysis
+"simple question -quick"               # → Force brief answer
+"explain concepts -explain"            # → Force detailed explanation
 ```
 
 #### **Layer 2: Custom Command System**
 - Advanced development workflows
 - Context-aware execution
 - Powered by `/core` Python framework
+
+### Shortcut Flag System
+
+The **flag dispatcher** provides instant control over Claude's response style using shortcut flags:
+
+#### **Available Flags**
+```bash
+# Core flags (user requested)
+-ut              # Ultra Think - deep analysis with comprehensive reasoning
+-debug           # Debug Mode - systematic error analysis and troubleshooting
+
+# Additional control flags  
+-quick           # Quick Mode - brief, concise answers only (conflicts with -ut, -debug, -explain)
+-explain         # Explain Mode - detailed explanations and teaching
+-code            # Code Mode - focus on implementation with minimal explanation
+-review          # Review Mode - code review with best practices
+-secure          # Security Mode - focus on security implications
+-optimize        # Optimization Mode - performance and efficiency focus
+-refactor        # Refactor Mode - code restructuring suggestions
+-test            # Test Mode - testing strategies and implementation
+```
+
+#### **Flag Usage Examples**
+```bash
+# Force ultra think for complex problems
+"How should I architect a distributed system? -ut"
+
+# Quick answers for simple questions
+"What is Python? -quick"
+
+# Combine compatible flags
+"Review this code for security issues -review -secure"
+
+# Debug mode for error analysis
+"I'm getting this error: [error details] -debug"
+```
+
+#### **Conflict Resolution**
+- Conflicting flags (like `-quick` and `-explain`) are automatically resolved
+- First detected flag takes priority
+- System provides clean, predictable behavior
 
 ### Custom Commands
 
