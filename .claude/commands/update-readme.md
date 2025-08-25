@@ -1,7 +1,7 @@
 ---
-allowed-tools: Read, Edit, MultiEdit, Glob, Grep, Bash(git:*), Bash(npm:*), Bash(pip:*), LS
+allowed-tools: Read, Edit, MultiEdit, Glob, Grep, Bash(git:*), Bash(npm:*), Bash(pip:*), Bash(python:*), Bash(find:*), Bash(tree:*), LS, WebFetch
 argument-hint: [--lang=en|zh|both] [--sections=section1,section2] [--preserve=true|false]
-description: Intelligently update existing README while preserving custom content
+description: Intelligently analyze codebase and update README with auto-discovered APIs, features, and architecture while preserving custom content
 model: claude-sonnet-4-20250514
 ---
 
@@ -73,6 +73,319 @@ Analyze `$ARGUMENTS` for update parameters:
 - **Outdated Information**: Installation steps, version numbers, deprecated features
 - **Broken Links**: Invalid URLs or references
 - **Inconsistent Information**: Conflicts between code and documentation
+
+## **NEW: Multi-Language Intelligent Codebase Analysis**
+
+### **Phase 1: Universal Project Detection**
+
+#### **Language and Framework Discovery**
+```bash
+# Multi-language project detection
+find . -name "*.py" | wc -l    # Python files
+find . -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" | wc -l  # JS/TS
+find . -name "*.java" | wc -l  # Java files
+find . -name "*.rs" | wc -l    # Rust files  
+find . -name "*.go" | wc -l    # Go files
+find . -name "*.md" | wc -l    # Documentation files
+
+# Framework and tool detection
+test -f package.json && echo "Node.js/JavaScript project detected"
+test -f requirements.txt -o -f setup.py -o -f pyproject.toml && echo "Python project detected"
+test -f pom.xml -o -f build.gradle && echo "Java project detected"
+test -f Cargo.toml && echo "Rust project detected"  
+test -f go.mod && echo "Go project detected"
+test -f Dockerfile && echo "Docker containerization detected"
+```
+
+#### **Universal Project Structure Analysis**
+```bash
+# Comprehensive project tree (cross-platform)
+tree -I 'node_modules|__pycache__|.git|target|build|dist|.venv|env' -L 3 2>/dev/null || find . -type d -name "node_modules" -prune -o -name "__pycache__" -prune -o -name ".git" -prune -o -type f -print | head -30
+
+# Configuration files across all ecosystems
+find . -maxdepth 2 \( -name "package.json" -o -name "requirements.txt" -o -name "Cargo.toml" -o -name "go.mod" -o -name "pom.xml" -o -name "setup.py" -o -name "pyproject.toml" -o -name "composer.json" -o -name "Gemfile" \)
+```
+
+### **Phase 2: Multi-Language API and Interface Discovery**
+
+#### **Cross-Language Code Analysis**
+
+**Python Analysis**:
+```bash
+# Extract Python APIs and CLI commands
+grep -r "def " . --include="*.py" | grep -v "__" | head -10
+grep -r "class " . --include="*.py" | head -10
+grep -r "argparse\|click\|typer" . --include="*.py" | head -5
+```
+
+**JavaScript/TypeScript Analysis**:
+```bash
+# Extract JS/TS exports and functions
+grep -r "export.*function\|export.*class\|export.*const" . --include="*.js" --include="*.ts" | head -10
+grep -r "module.exports\|exports\." . --include="*.js" | head -10
+```
+
+**Configuration and Environment**:
+```bash
+# Universal environment variable discovery
+grep -r "process\.env\|os\.getenv\|System\.getenv\|std::env" . --include="*.py" --include="*.js" --include="*.ts" --include="*.java" --include="*.rs" | head -10
+
+# Configuration file schemas
+find . \( -name "*.json" -o -name "*.yaml" -o -name "*.yml" -o -name "*.toml" -o -name "*.ini" -o -name "*.conf" \) -not -path "./node_modules/*" -not -path "./.git/*" | head -10
+```
+
+#### **Universal Pattern Detection**
+
+**CLI Tools and Commands**:
+- **Python**: `argparse`, `click`, `typer` patterns
+- **Node.js**: `commander.js`, `yargs` patterns  
+- **Rust**: `clap`, `structopt` patterns
+- **Go**: `cobra`, `flag` patterns
+- **Java**: `picocli`, `commons-cli` patterns
+
+**Web APIs and Services**:
+- **Python**: Flask, FastAPI, Django route discovery
+- **JavaScript**: Express, Next.js API routes
+- **Java**: Spring Boot endpoints
+- **Rust**: Actix, Warp route definitions
+- **Go**: Gin, Echo route patterns
+
+**Database and Storage**:
+- **ORM Detection**: SQLAlchemy, Mongoose, Hibernate patterns
+- **Database Configs**: Connection strings and schema files
+- **Migration Files**: Database evolution tracking
+
+### **Phase 3: Intelligent Example Generation**
+
+#### **Test-Driven Documentation Discovery**
+```bash
+# Extract real working examples from test suites
+find . \( -name "*test*.py" -o -name "*test*.js" -o -name "*test*.ts" -o -name "*test*.rs" -o -name "*test*.go" -o -name "*test*.java" \) | head -15
+
+# Find integration and example tests
+grep -r "def test_\|it(\|describe(\|#\[test\]\|func Test\|@Test" . --include="*test*" | head -20
+
+# Extract setup and teardown patterns
+grep -r "setUp\|beforeEach\|beforeAll\|setup\|tearDown\|afterEach" . --include="*test*" | head -10
+```
+
+#### **Auto-Generated Usage Examples**
+
+**Python Example Generation**:
+```bash
+# Extract function signatures with docstrings
+python -c "
+import ast, os
+for root, dirs, files in os.walk('.'):
+    for file in files:
+        if file.endswith('.py') and 'test' not in file:
+            try:
+                with open(os.path.join(root, file)) as f:
+                    tree = ast.parse(f.read())
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.FunctionDef) and not node.name.startswith('_'):
+                        docstring = ast.get_docstring(node)
+                        if docstring:
+                            print(f'FUNCTION: {node.name}')
+                            print(f'DOC: {docstring[:100]}...')
+                            print('---')
+            except: pass
+"
+```
+
+**CLI Command Discovery**:
+```bash
+# Universal CLI help extraction
+find . \( -name "*.py" -o -name "*.js" -o -name "*.rs" -o -name "*.go" \) -executable 2>/dev/null | head -5 | while read f; do
+  echo "Testing CLI: $f"
+  timeout 3 "$f" --help 2>/dev/null | head -10
+done
+
+# Python CLI patterns
+grep -r "if __name__ == .__main__." . --include="*.py" | head -5
+grep -r "@click.command\|@app.command\|parser.add_argument" . --include="*.py" | head -10
+```
+
+#### **Configuration Example Extraction**
+```bash
+# Extract configuration examples from existing files
+find . -name "*.example" -o -name "*.sample" -o -name "*template*" | head -10
+
+# Environment variable documentation
+grep -r "# Example:\|# Usage:\|# Config:" . --include="*.md" --include="*.py" --include="*.js" | head -15
+
+# Default configuration discovery  
+find . \( -name "defaults.*" -o -name "config.*" -o -name "settings.*" \) -not -path "./.git/*" | head -10
+```
+
+### **Phase 4: Architecture and Workflow Analysis**
+
+#### **Project Architecture Discovery**
+```bash
+# Module dependency mapping
+find . -name "*.py" -exec grep -l "^import\|^from" {} \; | head -10 | while read f; do
+  echo "=== $f ==="
+  grep "^import\|^from" "$f" | head -5
+done
+
+# Cross-language import analysis
+grep -r "^import\|^from\|require(\|import .*from\|use .*::" . --include="*.py" --include="*.js" --include="*.ts" --include="*.rs" | head -20
+```
+
+#### **Workflow and Pipeline Detection**
+```bash
+# CI/CD pipeline discovery
+find . \( -name "*.yml" -o -name "*.yaml" \) -path "*/.github/*" -o -path "*/.gitlab/*" -o -path "*/workflows/*" | head -5
+
+# Build and deployment scripts  
+find . \( -name "Makefile" -o -name "build.sh" -o -name "deploy.sh" -o -name "*.dockerfile" \) | head -10
+
+# Package management and dependency files
+find . \( -name "package-lock.json" -o -name "yarn.lock" -o -name "Pipfile.lock" -o -name "Cargo.lock" \) | head -5
+```
+
+#### **Auto-Generated Sections Strategy**
+
+**Installation Section**:
+- **Multi-Platform**: Detect package managers and generate appropriate install commands
+- **Prerequisites**: Extract required system dependencies from docs and config
+- **Environment Setup**: Generate from `.env` examples and config files
+
+**Quick Start Section**:
+- **Minimal Example**: Extract from main entry points and CLI help
+- **Common Use Cases**: Generated from test patterns and example files
+- **Configuration**: Auto-generate from discovered config schemas
+
+**API Reference Section**:
+- **Function Documentation**: Auto-extract from docstrings and comments
+- **Parameter Details**: Parse function signatures and type hints
+- **Return Values**: Extract from documentation and test assertions
+
+**Examples Section**:
+- **Working Code**: Validated examples from test suites
+- **Integration Examples**: Real-world usage from integration tests
+- **Error Handling**: Common error patterns from exception handling code
+
+### **Phase 5: Advanced Architecture Analysis and Documentation**
+
+#### **Project Architecture Visualization**
+```bash
+# Generate comprehensive project structure with descriptions
+echo "## Project Architecture" > architecture_analysis.md
+
+# Core directories analysis
+find . -type d -not -path "./.git/*" -not -path "./node_modules/*" -not -path "./__pycache__/*" | head -20 | while read dir; do
+  echo "### Directory: $dir" >> architecture_analysis.md
+  file_count=$(find "$dir" -maxdepth 1 -type f | wc -l)
+  main_types=$(find "$dir" -maxdepth 1 -name "*.*" | sed 's/.*\.//' | sort | uniq -c | sort -nr | head -3)
+  echo "- Files: $file_count" >> architecture_analysis.md
+  echo "- Main types: $main_types" >> architecture_analysis.md
+done
+
+# Key component identification
+echo -e "\n## Key Components" >> architecture_analysis.md
+```
+
+#### **Design Pattern and Architecture Detection**
+```bash
+# Design pattern recognition across languages
+echo "Detecting common design patterns..."
+
+# Singleton pattern detection
+grep -r "class.*Singleton\|getInstance\|__new__.*instance" . --include="*.py" --include="*.js" --include="*.java" | head -5
+
+# Factory pattern detection
+grep -r "Factory\|createInstance\|factory.*function" . --include="*.py" --include="*.js" --include="*.java" | head -5
+
+# Observer/Event patterns
+grep -r "addEventListener\|on.*Event\|observer\|subscriber" . --include="*.py" --include="*.js" --include="*.java" | head -5
+
+# MVC/MVP patterns
+find . \( -name "*controller*" -o -name "*view*" -o -name "*model*" \) -type f | head -10
+```
+
+#### **Technology Stack Analysis**
+```bash
+# Comprehensive technology stack discovery
+echo "=== TECHNOLOGY STACK ANALYSIS ===" > tech_stack.md
+
+# Backend frameworks
+echo "## Backend Technologies:" >> tech_stack.md
+grep -r "flask\|django\|fastapi\|express\|spring\|gin\|actix" . --include="*.py" --include="*.js" --include="*.java" --include="*.go" --include="*.rs" | cut -d: -f1 | sort -u >> tech_stack.md
+
+# Frontend technologies
+echo -e "\n## Frontend Technologies:" >> tech_stack.md
+find . \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" -o -name "*.vue" \) | head -10 >> tech_stack.md
+
+# Database technologies
+echo -e "\n## Database Technologies:" >> tech_stack.md
+grep -r "sqlite\|postgresql\|mysql\|mongodb\|redis" . --include="*.py" --include="*.js" --include="*.java" --include="*.go" | head -10 >> tech_stack.md
+
+# DevOps and deployment
+echo -e "\n## DevOps Tools:" >> tech_stack.md
+find . \( -name "Dockerfile" -o -name "docker-compose*" -o -name "*.yml" -path "*/.github/*" \) >> tech_stack.md
+```
+
+#### **Data Flow and Component Interaction Analysis**
+```bash
+# API endpoint mapping
+echo "=== API ENDPOINTS ===" > api_analysis.md
+
+# REST API discovery (multiple languages)
+grep -r "@app.route\|app.get\|app.post\|@GetMapping\|@PostMapping\|router.get\|router.post" . --include="*.py" --include="*.js" --include="*.java" | head -15 >> api_analysis.md
+
+# GraphQL schema detection
+find . -name "*.graphql" -o -name "*schema*" | head -5 >> api_analysis.md
+
+# Database model relationships
+grep -r "ForeignKey\|relationship\|belongs_to\|has_many\|references" . --include="*.py" --include="*.js" --include="*.rb" | head -10 >> api_analysis.md
+```
+
+#### **Security and Configuration Analysis**
+```bash
+# Security implementation detection
+echo "=== SECURITY ANALYSIS ===" > security_analysis.md
+
+# Authentication patterns
+grep -r "jwt\|oauth\|passport\|auth\|login\|session" . --include="*.py" --include="*.js" --include="*.java" --include="*.go" | head -15 >> security_analysis.md
+
+# Configuration management
+echo -e "\n## Configuration Management:" >> security_analysis.md
+find . \( -name ".env*" -o -name "config.*" -o -name "settings.*" \) | head -10 >> security_analysis.md
+
+# Environment variable usage
+grep -r "os.getenv\|process.env\|System.getenv" . --include="*.py" --include="*.js" --include="*.java" | wc -l
+```
+
+#### **Performance and Scalability Insights**
+```bash
+# Performance-related code detection
+echo "=== PERFORMANCE ANALYSIS ===" > performance_analysis.md
+
+# Caching implementation
+grep -r "cache\|redis\|memcache\|@cache\|@cached" . --include="*.py" --include="*.js" --include="*.java" | head -10 >> performance_analysis.md
+
+# Async/concurrent patterns
+grep -r "async\|await\|threading\|multiprocessing\|concurrent" . --include="*.py" --include="*.js" --include="*.java" --include="*.go" | head -10 >> performance_analysis.md
+
+# Database optimization
+grep -r "index\|query.*optimize\|select_related\|prefetch" . --include="*.py" --include="*.js" --include="*.java" | head -10 >> performance_analysis.md
+```
+
+#### **README Architecture Section Generation**
+
+**Auto-Generated Architecture Documentation**:
+- **High-Level Overview**: Generate project summary from discovered patterns
+- **Component Diagram**: Text-based architecture visualization
+- **Technology Stack**: Comprehensive list of detected technologies
+- **Data Flow**: Description of how data moves through the system
+- **Key Design Decisions**: Inferred from code patterns and structure
+
+**Multi-Language Project Documentation**:
+- **Language Distribution**: Percentage breakdown of code by language
+- **Framework Integration**: How different frameworks work together
+- **Cross-Language Communication**: APIs, shared data formats, protocols
+- **Build and Deployment**: Multi-language build processes and dependencies
 
 ## Intelligent Update Process
 
