@@ -9,9 +9,9 @@
 [![许可证](https://img.shields.io/badge/许可证-MIT-blue.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/claude--code-automation-purple.svg)](https://claude.ai/code)
 
-**增强的 Claude Code 自动化框架，具备智能钩子、自定义命令和双语文档生成功能。**
+**基于 Python 的高级 Claude Code 自动化框架，具备智能钩子、自定义命令和多语言代码库分析功能。**
 
-这个仓库提供了一个复杂的双层自动化系统，通过上下文感知的提示修改、高级开发工作流程和智能项目分析来扩展 Claude Code 的功能。
+这个仓库提供了一个复杂的双层自动化系统，通过上下文感知的提示修改、高级开发工作流程、智能项目分析和基于代码库发现的自动文档生成来扩展 Claude Code 的功能。
 
 ## 功能特性
 
@@ -31,11 +31,14 @@
 - **文件审查** (`/file-review`) - 综合代码分析
 - **Git 提交** (`/git-commit`) - 超级思考驱动的提交信息生成
 - **项目清理** (`/clean-project`) - 具备 git 保护的安全项目清理
-- **双语文档** (`/create-readme`, `/update-readme`) - 带备份功能的英文/中文 README 自动化
+- **智能文档生成** (`/create-readme`, `/update-readme`) - **增强版** 多语言代码库分析，自动 API 发现、架构可视化和双语 README 生成
 
-### **上下文智能**
-- **项目检测** - 自动识别项目类型（Web、Python、Java、Rust、Go、Docker）
-- **语言分析** - 智能检测编程语言和框架
+### **上下文智能与代码库分析**
+- **多语言项目检测** - 自动识别项目类型（Python、JavaScript/TypeScript、Java、Rust、Go、Docker）
+- **高级代码发现** - 基于 AST 的 Python API 分析、函数签名和类层次结构解析
+- **跨语言 API 检测** - CLI 工具、Web API 和配置系统的通用模式识别
+- **架构分析** - 智能项目结构映射、依赖分析和设计模式检测
+- **测试驱动文档** - 从测试套件和集成测试中自动提取工作示例
 - **Git 集成** - 分支跟踪、变更分析和提交智能
 - **工具验证** - 先决条件检查和环境验证
 

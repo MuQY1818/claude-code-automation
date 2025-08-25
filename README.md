@@ -9,9 +9,9 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/claude--code-automation-purple.svg)](https://claude.ai/code)
 
-**Enhanced Claude Code automation framework with intelligent hooks, custom commands, and bilingual documentation generation.**
+**Advanced Python-based Claude Code automation framework with intelligent hooks, custom commands, and multi-language codebase analysis.**
 
-This repository provides a sophisticated dual-layer automation system that extends Claude Code's capabilities with context-aware prompt modification, advanced development workflows, and intelligent project analysis.
+This repository provides a sophisticated dual-layer automation system that extends Claude Code's capabilities with context-aware prompt modification, advanced development workflows, intelligent project analysis, and automated documentation generation with codebase discovery.
 
 ## Features
 
@@ -31,11 +31,14 @@ This repository provides a sophisticated dual-layer automation system that exten
 - **File Review** (`/file-review`) - Comprehensive code analysis
 - **Git Commits** (`/git-commit`) - Ultra think-powered commit message generation
 - **Project Cleanup** (`/clean-project`) - Safe project cleanup with git protection
-- **Bilingual Documentation** (`/create-readme`, `/update-readme`) - English/Chinese README automation with backups
+- **Intelligent Documentation** (`/create-readme`, `/update-readme`) - **ENHANCED** Multi-language codebase analysis with automated API discovery, architecture visualization, and bilingual README generation
 
-### **Context Intelligence**
-- **Project Detection** - Automatic identification of project types (Web, Python, Java, Rust, Go, Docker)
-- **Language Analysis** - Smart detection of programming languages and frameworks
+### **Context Intelligence & Codebase Analysis**
+- **Multi-Language Project Detection** - Automatic identification of project types (Python, JavaScript/TypeScript, Java, Rust, Go, Docker)
+- **Advanced Code Discovery** - AST-based analysis for Python APIs, function signatures, and class hierarchies
+- **Cross-Language API Detection** - Universal pattern recognition for CLI tools, web APIs, and configuration systems
+- **Architecture Analysis** - Intelligent project structure mapping, dependency analysis, and design pattern detection
+- **Test-Driven Documentation** - Automatic extraction of working examples from test suites and integration tests
 - **Git Integration** - Branch tracking, change analysis, and commit intelligence
 - **Tool Validation** - Prerequisite checking and environment validation
 
@@ -246,19 +249,52 @@ git checkout -b refactor/improvements
 
 ## Architecture
 
-The system uses a **dual-layer architecture** with comprehensive safety measures:
+The system uses a **sophisticated dual-layer architecture** with comprehensive safety measures and intelligent codebase analysis:
 
 ### **Core Components**
-- **Context Manager** (`core/context_manager.py`) - Project intelligence and detection
-- **Command Registry** (`core/command_registry.py`) - Command execution and validation  
-- **Hook Dispatcher** (`core/hook_dispatcher.py`) - Command-level hook management
-- **Native Hooks** (`hooks/UserPromptSubmit/`) - Prompt modification scripts
+- **Context Manager** (`core/context_manager.py`) - Intelligent project detection and multi-language analysis
+- **Command Registry** (`core/command_registry.py`) - Dynamic command execution, validation, and plugin system  
+- **Hook Dispatcher** (`core/hook_dispatcher.py`) - Advanced hook management with execution control
+- **Flag Dispatcher** (`hooks/UserPromptSubmit/flag_dispatcher.py`) - **NEW** Intelligent shortcut flag processing with conflict resolution
+- **Native Hooks** (`hooks/UserPromptSubmit/`) - 5-stage prompt modification pipeline
 
-### **Safety Features**
+### **Architecture Visualization**
+```
+Claude Code Automation Framework
+┌─────────────────────────────────────┐
+│ Layer 1: Native Hook Pipeline       │
+│ ┌─ flag_dispatcher.py (Shortcuts)   │
+│ ├─ append_ultrathink.py (Deep)      │
+│ ├─ answer_in_short.py (Concise)     │
+│ ├─ append_explain.py (Learning)     │
+│ └─ append_default.py (Digest)       │
+└─────────────────────────────────────┘
+          ↓ Enhanced Prompts
+┌─────────────────────────────────────┐
+│ Layer 2: Python Command System     │
+│ ┌─ /security (Vulnerability Scan)   │
+│ ├─ /create-PR (Intelligent PR)      │
+│ ├─ /update-readme (Smart Analysis)  │
+│ ├─ /git-commit (Ultra Think)        │
+│ └─ 7 more specialized commands      │
+└─────────────────────────────────────┘
+          ↓ Context-Aware Execution
+┌─────────────────────────────────────┐
+│ Codebase Intelligence Engine       │
+│ • Multi-language AST analysis      │
+│ • API auto-discovery               │
+│ • Architecture visualization       │
+│ • Test-driven documentation        │
+└─────────────────────────────────────┘
+```
+
+### **Safety Features & Intelligence**
 - **Branch Protection** - Commands that modify files require feature branches
-- **Backup Creation** - Automatic backups before destructive operations
-- **Dry-run Modes** - Preview changes before execution
+- **Automatic Backup System** - Intelligent backups before destructive operations with timestamps
+- **Multi-Stage Validation** - Pre-flight checks, dry-run modes, and rollback capabilities
 - **Git Safety** - Never touches main/master branches for risky operations
+- **Conflict Resolution** - Smart handling of flag conflicts and parameter validation
+- **Context-Aware Execution** - Commands adapt behavior based on detected project characteristics
 
 ### **Configuration System**
 - **Native Hooks**: `.claude/settings.json` (Claude Code format)
