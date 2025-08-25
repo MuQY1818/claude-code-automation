@@ -4,17 +4,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## System Architecture
 
-This repository contains a **dual-layer automation framework** with complementary systems:
+This repository contains a **Python-based Claude Code automation framework** with a sophisticated dual-layer architecture for intelligent development workflows:
 
 ### **Layer 1: Native Claude Code Hooks**
-- **Purpose**: Prompt modification and response behavior
+- **Purpose**: Real-time prompt modification and intelligent response behavior control
+- **Technology**: Python-based hook scripts with advanced flag processing
 - **Configuration**: `.claude/settings.json` (Claude Code native format)
-- **Scope**: UserPromptSubmit events only
+- **Scope**: UserPromptSubmit events with comprehensive flag system
+- **Key Innovation**: Flag dispatcher for instant response mode switching
 
-### **Layer 2: Custom Command System** 
-- **Purpose**: Advanced development workflows and context-aware automation
-- **Configuration**: `.claude/settings/` folder with custom Python framework
-- **Scope**: Slash commands, project intelligence, command-level hooks
+### **Layer 2: Advanced Command System** 
+- **Purpose**: Sophisticated development workflows and context-aware automation
+- **Technology**: Python framework with context management and intelligent detection
+- **Configuration**: `.claude/settings/` folder with hierarchical JSON configuration
+- **Scope**: 11 specialized slash commands, project intelligence, multi-level hook system
+- **Key Innovation**: Context-aware execution adapting to project type and environment
 
 ### Core Components
 
@@ -39,7 +43,23 @@ Hooks are configured in `.claude/settings.json` using Claude Code's native forma
         "hooks": [
           {
             "type": "command",
-            "command": "python \".claude/hooks/UserPromptSubmit/script.py\""
+            "command": "python \".claude/hooks/UserPromptSubmit/flag_dispatcher.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/append_ultrathink.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/answer_in_short.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/append_explain.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/append_default.py\""
           }
         ]
       }
@@ -49,21 +69,45 @@ Hooks are configured in `.claude/settings.json` using Claude Code's native forma
 ```
 
 ### Active UserPromptSubmit Hooks (Execution Order)
-1. **append_ultrathink** - Adds deep thinking prompts for complex architectural problems
-2. **answer_in_short** - Enforces concise responses for simple queries  
-3. **append_explain** - Adds explanation requests for learning scenarios
-4. **append_default** - Activates with `-d` flag for project-aware digest mode
+1. **flag_dispatcher** - Central flag processing system for intelligent shortcuts (`-ut`, `-debug`, `-quick`, etc.)
+2. **append_ultrathink** - Adds deep thinking prompts for complex architectural problems
+3. **answer_in_short** - Enforces concise responses for simple queries  
+4. **append_explain** - Adds explanation requests for learning scenarios
+5. **append_default** - Activates with `-d` flag for project-aware digest mode
+
+### Flag Dispatcher System
+**NEW** Advanced shortcut system for intelligent response control:
+
+#### **Core Performance Flags**
+- **`-ut`** - Ultra Think mode: Deep analysis with comprehensive reasoning
+- **`-debug`** - Debug mode: Systematic error analysis and troubleshooting  
+- **`-quick`** - Quick mode: Brief, concise answers only
+- **`-explain`** - Explain mode: Detailed explanations and teaching
+
+#### **Development Focus Flags**
+- **`-code`** - Code mode: Implementation focus with minimal explanation
+- **`-review`** - Review mode: Code review with best practices
+- **`-secure`** - Security mode: Focus on security implications
+- **`-optimize`** - Optimization mode: Performance and efficiency focus
+- **`-refactor`** - Refactor mode: Code restructuring suggestions
+- **`-test`** - Test mode: Testing strategies and implementation
+
+#### **Flag Conflict Resolution**
+- **Automatic detection** of conflicting flags (e.g., `-quick` vs `-ut`)
+- **Priority-based resolution** - first detected flag takes precedence
+- **Intelligent combinations** - compatible flags can be used together
 
 ### Hook Execution Model
 - Hooks execute **sequentially** in the order defined in settings.json
 - Each hook receives the **original or previously modified prompt** from stdin
 - Hooks output **modified prompts** to stdout
 - **Exit code 0** indicates success, non-zero indicates error/skip
+- Flags are **automatically stripped** from prompts after processing
 - The `-d` flag is **stripped from prompts** and triggers digest mode instructions
 
 ## Custom Command System
 
-The advanced automation layer provides 10 specialized commands that operate independently of the native hook system:
+The advanced automation layer provides **11 specialized commands** that operate independently of the native hook system:
 
 ### Core Development Commands
 - `/security` - Multi-layered security analysis (secrets, dependencies, static analysis, config)
@@ -73,9 +117,10 @@ The advanced automation layer provides 10 specialized commands that operate inde
 - `/push-to-github` - Validated git push with branch management
 - `/header-comments` - Intelligent file header generation
 - `/explain-pull-request` - Architectural documentation and analysis
-- `/create-readme` - **NEW** Generate intelligent bilingual README with deep project analysis
-- `/update-readme` - **NEW** Intelligently update existing README while preserving custom content
-- `/git-commit` - **NEW** Generate intelligent commit messages using ultra think analysis
+- `/create-readme` - Generate intelligent bilingual README with deep project analysis
+- `/update-readme` - Intelligently update existing README while preserving custom content
+- `/git-commit` - Generate intelligent commit messages using ultra think analysis
+- `/clean-project` - **NEW** Safely clean project files while preserving code and git integrity
 
 ### Command System Architecture
 - **Context-Aware Execution** - Commands adapt behavior based on detected project type, languages, frameworks
@@ -98,12 +143,14 @@ This provides enterprise-grade automation capabilities beyond simple prompt modi
 The system automatically detects and adapts to different project environments:
 
 ### Project Type Detection
-- **Web**: `package.json`, `webpack.config.js`, `yarn.lock`
-- **Python**: `requirements.txt`, `setup.py`, `pyproject.toml`
-- **Java**: `pom.xml`, `build.gradle`
+**Primary Focus**: Python-based automation framework with multi-language support
+- **Python** (Primary): `requirements.txt`, `setup.py`, `pyproject.toml`, `Pipfile`
+- **Web/Node.js**: `package.json`, `webpack.config.js`, `yarn.lock`
+- **Java**: `pom.xml`, `build.gradle`, `gradlew`
 - **Rust**: `Cargo.toml`
 - **Go**: `go.mod`, `go.sum`
 - **Docker**: `Dockerfile`, `docker-compose.yml`
+- **Configuration**: `.claude/` directory structure with Python core
 
 ### Dynamic Context Injection
 - **Language detection** via file extensions and patterns
@@ -180,6 +227,26 @@ Context-aware code improvement:
 - `--dry-run` - Preview without committing
 - `--auto` - Skip confirmation for automated workflows
 
+### Project Cleanup (`/clean-project`)
+**NEW** Safe, intelligent project cleanup system:
+
+#### **Safety-First Design**
+- **Mandatory branch protection** - Cannot run on main/master branches
+- **Dry-run mode** - Preview all changes before execution
+- **Git integrity preservation** - Zero risk to repository state
+- **Rollback capability** - All operations are reversible
+
+#### **Cleanup Modes**
+- **Safe mode** (default) - Conservative cleanup of temporary files only
+- **Moderate mode** - Extended cleanup including build artifacts and cache
+- **Custom targeting** - Selective cleanup with user-defined patterns
+
+#### **Key Features**
+- **Multi-language support** - Python, Node.js, Java, Rust, Go projects
+- **Build system awareness** - Respects .gitignore and build configurations
+- **Performance optimization** - Parallel processing for large projects
+- **Detailed reporting** - Complete audit trail of all changes
+
 ## Configuration Management
 
 ### Settings Hierarchy
@@ -230,7 +297,7 @@ if __name__ == "__main__":
 
 ### Adding Hooks to Configuration
 1. Add your script to `.claude/hooks/UserPromptSubmit/your_hook.py`
-2. Update `.claude/settings.json` to include your hook:
+2. Update `.claude/settings.json` to include your hook (maintain execution order):
 ```json
 {
   "hooks": {
@@ -239,7 +306,15 @@ if __name__ == "__main__":
         "hooks": [
           {
             "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/flag_dispatcher.py\""
+          },
+          {
+            "type": "command",
             "command": "python \".claude/hooks/UserPromptSubmit/your_hook.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \".claude/hooks/UserPromptSubmit/append_ultrathink.py\""
           }
         ]
       }
@@ -247,6 +322,55 @@ if __name__ == "__main__":
   }
 }
 ```
+
+**Important**: Place your hook after `flag_dispatcher` but consider its interaction with other hooks.
+
+## Flag Usage Examples and Best Practices
+
+### **Common Flag Combinations**
+```bash
+# Ultra think analysis for complex problems
+"Analyze the authentication system architecture -ut"
+
+# Quick debug for immediate issues
+"Why is this API call failing? -debug"
+
+# Concise answers for simple questions
+"What does this function do? -quick"
+
+# Code focus with security analysis
+"Implement user login function -code -secure"
+
+# Review with optimization suggestions
+"Review this algorithm -review -optimize"
+```
+
+### **Flag Conflict Examples**
+```bash
+# Conflicting flags (auto-resolved to first)
+"Explain this concept -quick -explain"  # → Uses -quick mode
+"Debug this error -ut -debug"           # → Uses -ut mode
+
+# Compatible flag combinations
+"Review code security -review -secure"   # ✓ Compatible
+"Optimize and refactor -optimize -refactor" # ✓ Compatible
+```
+
+### **Best Practices**
+1. **Start with problem type**: Use `-debug` for errors, `-ut` for architecture
+2. **Combine compatible flags**: `-review + -secure`, `-code + -optimize`
+3. **Use `-quick` for rapid iteration** during development cycles
+4. **Apply `-explain` for learning** complex concepts and patterns
+5. **Leverage `-test`** when implementing testing strategies
+
+### **Flag Selection Guide**
+- **Complex Analysis**: `-ut` (Ultra Think)
+- **Problem Solving**: `-debug` (Debug mode)
+- **Fast Development**: `-quick` (Quick mode)
+- **Learning**: `-explain` (Detailed explanations)
+- **Implementation**: `-code` (Code focus)
+- **Quality Assurance**: `-review`, `-test`, `-secure`
+- **Performance**: `-optimize`, `-refactor`
 
 ## System Integration
 
